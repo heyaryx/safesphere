@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Content Blocked - SafeSphere</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Nunito', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f8f9fa;
+      color: #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    .container {
+      max-width: 600px;
+      text-align: center;
+      background-color: white;
+      border-radius: 12px;
+      padding: 40px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+    .icon {
+      color: #e74c3c;
+      font-size: 72px;
+      margin-bottom: 20px;
+    }
+    h1 {
+      color: #e74c3c;
+      margin-top: 0;
+    }
+    p {
+      font-size: 16px;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+    .search-term {
+      background-color: #f8d7da;
+      padding: 5px 10px;
+      border-radius: 4px;
+      font-weight: bold;
+      color: #842029;
+    }
+    .button {
+      display: inline-block;
+      padding: 12px 24px;
+      background-color: #3498db;
+      color: white;
+      text-decoration: none;
+      border-radius: 30px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      margin: 5px;
+      border: none;
+      cursor: pointer;
+    }
+    .button:hover {
+      background-color: #2980b9;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .button.secondary {
+      background-color: #6c757d;
+    }
+    .button.secondary:hover {
+      background-color: #5a6268;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <i class="fas fa-shield-alt icon"></i>
+    <h1>Content Blocked</h1>
+    
+    <div id="blockedSite" style="display: none;">
+      <p>This website has been blocked by SafeSphere to protect you from potentially harmful or inappropriate content.</p>
+      <p>If you believe this website should be accessible, please ask your parent or guardian to review your SafeSphere settings.</p>
+    </div>
+    
+    <div id="explicitSearch" style="display: none;">
+      <p>Your search for <span id="searchTerm" class="search-term"></span> has been blocked by SafeSphere.</p>
+      <p>This search query may lead to explicit or inappropriate content that's not suitable for teens.</p>
+      <p>Try searching for something else or ask your parent/guardian for help.</p>
+    </div>
+    
+    <div class="actions">
+      <button onclick="window.history.back()" class="button"><i class="fas fa-arrow-left"></i> Go Back</button>
+      <button id="requestAccess" class="button secondary"><i class="fas fa-unlock"></i> Request Access</button>
+    </div>
+  </div>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Get URL parameters
+      const urlParams = new URLSearchParams(window.location.search);
+      const reason = urlParams.get('reason');
+      const query = urlParams.get('query');
+      
+      // Show appropriate message based on the reason
+      if (reason === 'explicitsearch' && query) {
+        document.getElementById('explicitSearch').style.display = 'block';
+        document.getElementById('searchTerm').textContent = query;
+      } else {
+        document.getElementById('blockedSite').style.display = 'block';
+      }
+      
+      // Log block event to background script
+      const blockedInfo = {
+        timestamp: new Date().toISOString(),
+        url: document.referrer || "Unknown URL",
+        reason: reason || "blockedsite",
+        query: query || null
+      };
+      
+      try {
+        chrome.runtime.sendMessage({
+          action: "logBlockedContent", 
+          blockedInfo: blockedInfo
+        });
+      } catch (error) {
+        console.error("Error logging blocked content:", error);
+      }
+      
+      // Request access button
+      document.getElementById('requestAccess').addEventListener('click', function() {
+        const message = "Your child is requesting access to blocked content. " + 
+                       (reason === 'explicitsearch' ? 
+                        `They attempted to search for: "${query}"` : 
+                        `They attempted to visit: "${document.referrer || window.location.href}"`);
+        
+        alert("A notification will be sent to your parent/guardian. If they approve, they can add this to the exceptions list in SafeSphere settings.");
+        
+        // Send request to background script
+        try {
+          chrome.runtime.sendMessage({
+            action: "requestAccess",
+            contentInfo: blockedInfo
+          });
+        } catch (error) {
+          console.error("Error sending access request:", error);
+        }
+      });
+    });
+  </script>
+</body>
+</html>
