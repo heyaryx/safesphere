@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SafeSphere Settings</title>
+  <link rel="stylesheet" href="options.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+  <div class="sidebar">
+    <div class="sidebar-header">
+      <img src="../assets/icons/icon48.png" alt="SafeSphere Logo">
+      <h1>SafeSphere</h1>
+    </div>
+    <nav>
+      <ul>
+        <li class="active" data-section="parental-controls"><i class="fas fa-lock"></i> Parental Controls</li>
+        <li data-section="content-filtering"><i class="fas fa-filter"></i> Content Filtering</li>
+        <li data-section="site-blocking"><i class="fas fa-ban"></i> Site Blocking</li>
+        <li data-section="time-management"><i class="fas fa-clock"></i> Time Management</li>
+        <li data-section="reports"><i class="fas fa-chart-bar"></i> Reports & Stats</li>
+      </ul>
+    </nav>
+    <div class="sidebar-footer">
+      <p>SafeSphere v1.0.1</p>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <div class="header">
+      <h1>Settings & Configuration</h1>
+      <div class="actions">
+        <button id="save-settings" class="primary"><i class="fas fa-save"></i> Save Settings</button>
+        <button id="reset-defaults"><i class="fas fa-undo"></i> Reset to Defaults</button>
+      </div>
+    </div>
+    
+    <div id="status-message" class="hidden"></div>
+    
+    <div class="settings-container">
+      <!-- Parental Controls Section -->
+      <div id="parental-controls" class="settings-section active">
+        <div class="section-header">
+          <h2><i class="fas fa-lock"></i> Parental Controls</h2>
+          <p>Secure your SafeSphere settings with a password to prevent unauthorized changes.</p>
+        </div>
+        
+        <div class="card">
+          <div class="card-header">
+            <h3>Password Protection</h3>
+          </div>
+          <div class="card-body">
+            <div class="form-group">
+              <label for="password">Parental Password</label>
+              <div class="password-input">
+                <input type="password" id="password" placeholder="Create a strong password">
+                <button id="toggle-password" type="button"><i class="fas fa-eye"></i></button>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="confirm-password">Confirm Password</label>
+              <div class="password-input">
+                <input type="password" id="confirm-password" placeholder="Re-enter your password">
+              </div>
+            </div>
+            <button id="set-password" class="primary"><i class="fas fa-key"></i> Set Password</button>
+            <p class="note">This password will be required to change settings or disable protection.</p>
+          </div>
+        </div>
+        
+        <div class="card">
+          <div class="card-header">
+            <h3>Emergency Contact</h3>
+          </div>
+          <div class="card-body">
+            <div class="form-group">
+              <label for="parent-email">Parent/Guardian Email</label>
+              <input type="email" id="parent-email" placeholder="example@email.com">
+            </div>
+            <p class="note">This email will be used for password recovery and important notifications.</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Content Filtering Section -->
+      <div id="content-filtering" class="settings-section">
+        <div class="section-header">
+          <h2><i class="fas fa-filter"></i> Content Filtering</h2>
+          <p>Control what type of content is filtered and blocked on websites.</p>
+        </div>
+        
+        <div class="card">
+          <div class="card-header">
+            <h3>Filtering Options</h3>
+          </div>
+          <div class="card-body">
+            <div class="form-group switch-group">
+              <label for="content-filtering-toggle">Enable Content Filtering:</label>
+              <label class="switch">
+                <input type="checkbox" id="content-filtering-toggle" checked>
+                <span class="slider round"></span>
+              </label>
+            </div>
+            
+            <div class="form-group switch-group">
+              <label for="keyword-filtering-toggle">Filter Inappropriate Keywords:</label>
+              <label class="switch">
+                <input type="checkbox" id="keyword-filtering-toggle" checked>
+                <span class="slider round"></span>
+              </label>
+            </div>
+            
+            <div class="form-group switch-group">
+              <label for="image-filtering-toggle">Filter Inappropriate Images:</label>
+              <label class="switch">
+                <input type="checkbox" id="image-filtering-toggle" checked>
+                <span class="slider round"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+        
+        <div class="card">
+          <div class="card-header">
+            <h3>Content Categories to Filter</h3>
+          </div>
+          <div class="card-body">
+            <div class="checkbox-grid">
+              <div class="checkbox-item">
+                <input type="checkbox" id="adult-content" checked>
+                <label for="adult-content">Adult Content</label>
+              </div>
+              <div class="checkbox-item">
+                <input type="checkbox" id="violence" checked>
+                <label for="violence">Violence</label>
+              </div>
+              <div class="checkbox-item">
+                <input type="checkbox" id="gambling" checked>
+                <label for="gambling">Gambling</label>
+              </div>
+              <div class="checkbox-item">
+                <input type="checkbox" id="drugs" checked>
+                <label for="drugs">Drugs & Substances</label>
+              </div>
+              <div class="checkbox-item">
+                <input type="checkbox" id="hate-speech" checked>
+                <label for="hate-speech">Hate Speech</label>
+              </div>
+              <div class="checkbox-item">
+                <input type="checkbox" id="profanity" checked>
+                <label for="profanity">Profanity</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="card">
+          <div class="card-header">
+            <h3>Custom Keywords to Block</h3>
+          </div>
+          <div class="card-body">
+            <div class="form-group">
+              <label for="blocked-keywords">Blocked Keywords:</label>
+              <textarea id="blocked-keywords" rows="4" placeholder="Enter keywords separated by commas"></textarea>
+            </div>
+            <p class="note">These keywords will be filtered from all web pages.</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Site Blocking Section -->
+      <div id="site-blocking" class="settings-section">
+        <div class="section-header">
+          <h2><i class="fas fa-ban"></i> Site Blocking</h2>
+          <p>Control which websites are blocked completely.</p>
+        </div>
+        
+        <div class="card">
+          <div class="card-header">
+            <h3>Blocked Websites</h3>
+          </div>
+          <div class="card-body">
+            <div class="form-group">
+              <label for="blocked-sites">Websites to Block:</label>
+              <textarea id="blocked-sites" rows="4" placeholder="Enter websites to block, one per line"></textarea>
+            </div>
+            <p class="note">Enter full domains (e.g., example.com) or subdomains (e.g., sub.example.com).</p>
+            
+            <div class="blocked-sites-list">
+              <h4>Currently Blocked:</h4>
+              <ul id="current-blocked-sites">
+                <li>adult-site-example.com <button class="remove-site"><i class="fas fa-times"></i></button></li>
+                <li>gambling-example.com <button class="remove-site"><i class="fas fa-times"></i></button></li>
+                <li>violence-example.com <button class="remove-site"><i class="fas fa-times"></i></button></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        
+        <div class="card">
+          <div class="card-header">
+            <h3>Allow List</h3>
+          </div>
+          <div class="card-body">
+            <div class="form-group">
+              <label for="allowed-sites">Always Allow These Websites:</label>
+              <textarea id="allowed-sites" rows="4" placeholder="Enter websites to always allow, one per line"></textarea>
+            </div>
+            <p class="note">These websites will never be blocked, even if they contain filtered content.</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Time Management Section -->
+      <div id="time-management" class="settings-section">
+        <div class="section-header">
+          <h2><i class="fas fa-clock"></i> Time Management</h2>
+          <p>Set limits on screen time and schedule when internet access is allowed.</p>
+        </div>
+        
+        <div class="card">
+          <div class="card-header">
+            <h3>Daily Screen Time Limits</h3>
+          </div>
+          <div class="card-body">
+            <div class="form-group">
+              <label for="screen-time-limit">Daily Screen Time Limit (minutes):</label>
+              <input type="number" id="screen-time-limit" min="0" max="1440" value="120">
+            </div>
+            <p class="note">Set to 0 for unlimited screen time.</p>
+            
+            <div class="form-group switch-group">
+              <label for="screen-time-weekends">Different Limits for Weekends:</label>
+              <label class="switch">
+                <input type="checkbox" id="screen-time-weekends">
+                <span class="slider round"></span>
+              </label>
+            </div>
+            
+            <div class="form-group weekend-settings hidden">
+              <label for="weekend-time-limit">Weekend Screen Time Limit (minutes):</label>
+              <input type="number" id="weekend-time-limit" min="0" max="1440" value="240">
+            </div>
+          </div>
+        </div>
+        
+        <div class="card">
+          <div class="card-header">
+            <h3>Scheduled Access Times</h3>
+          </div>
+          <div class="card-body">
+            <div class="form-group switch-group">
+              <label for="schedule-enabled">Enable Scheduled Access:</label>
+              <label class="switch">
+                <input type="checkbox" id="schedule-enabled">
+                <span class="slider round"></span>
+              </label>
+            </div>
+            
+            <div class="schedule-settings">
+              <div class="time-range">
+                <div class="form-group">
+                  <label for="access-start">Start Time:</label>
+                  <input type="time" id="access-start" value="08:00">
+                </div>
+                <div class="form-group">
+                  <label for="access-end">End Time:</label>
+                  <input type="time" id="access-end" value="20:00">
+                </div>
+              </div>
+              <p class="note">Internet access will only be allowed between these times.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Reports & Stats Section -->
+      <div id="reports" class="settings-section">
+        <div class="section-header">
+          <h2><i class="fas fa-chart-bar"></i> Reports & Stats</h2>
+          <p>View statistics about browsing habits and protection activities.</p>
+        </div>
+        
+        <div class="card">
+          <div class="card-header">
+            <h3>Usage Statistics</h3>
+          </div>
+          <div class="card-body">
+            <div class="stats-grid">
+              <div class="stat-item">
+                <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                <div class="stat-value">0h 0m</div>
+                <div class="stat-label">Today's Screen Time</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-icon"><i class="fas fa-filter"></i></div>
+                <div class="stat-value">0</div>
+                <div class="stat-label">Content Filtered</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-icon"><i class="fas fa-ban"></i></div>
+                <div class="stat-value">0</div>
+                <div class="stat-label">Sites Blocked</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+                <div class="stat-value">100%</div>
+                <div class="stat-label">Protection Rate</div>
+              </div>
+            </div>
+            <p class="note">Statistics are reset daily at midnight.</p>
+          </div>
+        </div>
+        
+        <div class="card">
+          <div class="card-header">
+            <h3>Most Visited Websites</h3>
+          </div>
+          <div class="card-body">
+            <div class="site-list">
+              <p class="placeholder-text">Website usage statistics will appear here after you start browsing.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script src="options.js"></script>
+</body>
+</html>
